@@ -1,0 +1,4 @@
+[App]
+Name=Timer
+Executable=/bin/Timer
+Category=Utilities
