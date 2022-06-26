@@ -19,13 +19,15 @@
             shape: "Panel"
             shadow: "Sunken"
             thickness: 1
+            min_width: 50
 
             @GUI::Label {
                 name: "stopwatch_label"
                 text: "01:23.45"
-                font_type: "FixedWidth"
+                font: "Liza"
                 font_weight: "Bold"
-                font_size: 12
+                font_size: 24
+                font: "SevenF"
             }
 
             @GUI::HorizontalSeparator {}
