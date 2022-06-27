@@ -120,7 +120,7 @@ SpreadsheetWidget::SpreadsheetWidget(GUI::Window& parent_window, NonnullRefPtrVe
         VERIFY(sheet_ptr); // How did we get here without a sheet?
         auto& sheet = *sheet_ptr;
 
-        auto message = String::formatted("Are you sure you want to delete '{}'?", sheet.name());
+        auto message = String::formatted("Are you sure you want to delete \"{}\"?", sheet.name());
         auto result = GUI::MessageBox::show(window(),message,
             "Confirm deletion",
             GUI::MessageBox::Type::Warning,
@@ -131,6 +131,11 @@ SpreadsheetWidget::SpreadsheetWidget(GUI::Window& parent_window, NonnullRefPtrVe
 
         m_workbook->delete_sheet(sheet);
         m_tab_widget->remove_tab(static_cast<GUI::Widget&>(*m_tab_context_menu_sheet_view));
+    }));
+
+    m_tab_context_menu->add_action(GUI::Action::create("Duplicate sheet", Gfx::Bitmap::try_load_from_file("/res/icons/16x16/duplicate-tab.png").release_value_but_fixme_should_propagate_errors(), [this](auto&) {
+        VERIFY(m_tab_context_menu_sheet_view);
+
     }));
 
     setup_tabs(m_workbook->sheets());
