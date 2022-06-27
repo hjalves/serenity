@@ -120,9 +120,16 @@ SpreadsheetWidget::SpreadsheetWidget(GUI::Window& parent_window, NonnullRefPtrVe
         VERIFY(sheet_ptr); // How did we get here without a sheet?
         auto& sheet = *sheet_ptr;
 
-        m_workbook->delete_sheet(sheet);
+        auto message = String::formatted("Are you sure you want to delete '{}'?", sheet.name());
+        auto result = GUI::MessageBox::show(window(),message,
+            "Confirm deletion",
+            GUI::MessageBox::Type::Warning,
+            GUI::MessageBox::InputType::OKCancel);
 
-        NonnullRefPtrVector<Sheet> new_sheets = m_workbook->sheets();
+        if (result == GUI::MessageBox::ExecResult::Cancel)
+            return;
+
+        m_workbook->delete_sheet(sheet);
         m_tab_widget->remove_tab(static_cast<GUI::Widget&>(*m_tab_context_menu_sheet_view));
     }));
 
