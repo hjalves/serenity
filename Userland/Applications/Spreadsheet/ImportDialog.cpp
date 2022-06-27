@@ -198,8 +198,11 @@ Result<NonnullRefPtrVector<Sheet>, String> ImportDialog::make_and_run_for(GUI::W
                     return String::formatted("CSV Import failed: {}", reader.value().error_string());
 
                 auto sheet = Sheet::from_xsv(reader.value(), workbook);
-                if (sheet)
+                if (sheet) {
+                    auto title = LexicalPath::title(file.filename());
+                    sheet->set_name(title);
                     sheets.append(sheet.release_nonnull());
+                }
             }
 
             return sheets;
