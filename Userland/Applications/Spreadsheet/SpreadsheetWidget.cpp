@@ -113,6 +113,18 @@ SpreadsheetWidget::SpreadsheetWidget(GUI::Window& parent_window, NonnullRefPtrVe
             setup_tabs(move(new_sheets));
         }
     }));
+    m_tab_context_menu->add_action(GUI::Action::create("Delete sheet...", Gfx::Bitmap::try_load_from_file("/res/icons/16x16/close-tab.png").release_value_but_fixme_should_propagate_errors(), [this](auto&) {
+        VERIFY(m_tab_context_menu_sheet_view);
+
+        auto* sheet_ptr = m_tab_context_menu_sheet_view->sheet_if_available();
+        VERIFY(sheet_ptr); // How did we get here without a sheet?
+        auto& sheet = *sheet_ptr;
+
+        m_workbook->delete_sheet(sheet);
+
+        NonnullRefPtrVector<Sheet> new_sheets = m_workbook->sheets();
+        m_tab_widget->remove_tab(static_cast<GUI::Widget&>(*m_tab_context_menu_sheet_view));
+    }));
 
     setup_tabs(m_workbook->sheets());
 

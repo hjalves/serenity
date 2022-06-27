@@ -38,6 +38,10 @@ public:
         m_sheets.append(sheet);
         return *sheet;
     }
+    void delete_sheet(Sheet& sheet)
+    {
+        m_sheets.remove_first_matching([&](auto& s) { return &*s == &sheet; });
+    }
 
     WorkbookObject* workbook_object() { return m_workbook_object; }
     JS::VM& vm() { return *m_vm; }
