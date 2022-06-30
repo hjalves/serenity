@@ -1,7 +1,6 @@
 @GUI::Widget {
     fill_with_background_color: true
     min_width: 200
-
     layout: @GUI::VerticalBoxLayout {
         margins: [4]
     }
@@ -19,7 +18,8 @@
             shape: "Panel"
             shadow: "Sunken"
             thickness: 1
-            min_width: 50
+            min_width: 150
+            max_width: 300
 
             @GUI::Label {
                 name: "stopwatch_label"
@@ -34,28 +34,29 @@
 
             @GUI::Widget {
                 layout: @GUI::HorizontalBoxLayout {}
-                fixed_height: 10
+                preferred_height: "shrink"
 
                 @GUI::Label {
                     name: "split_count_label"
                     text: "Split #0"
                     text_alignment: "BottomLeft"
+                    min_height: 10
                 }
 
                 @GUI::Label {
                     name: "split_label"
                     text: "01:23.45"
                     text_alignment: "BottomRight"
+                    min_height: 10
                 }
             }
-
         }
 
         @GUI::VerticalSeparator {}
 
         @GUI::Widget {
             layout: @GUI::VerticalBoxLayout {}
-            max_width: 150
+            max_width: 120
 
             @GUI::Layout::Spacer {}
 
@@ -84,7 +85,5 @@
         @GUI::TableView {
             name: "split_times_table"
         }
-
     }
-
 }
