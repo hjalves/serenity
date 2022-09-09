@@ -3,7 +3,6 @@
 //
 
 #include "TimerWidget.h"
-#include <Userland/Applications/Timer/StopwatchTabGML.h>
 #include <LibGUI/Action.h>
 #include <LibGUI/BoxLayout.h>
 #include <LibGUI/Button.h>
@@ -11,6 +10,7 @@
 #include <LibGUI/Menu.h>
 #include <LibGUI/TableView.h>
 #include <LibGUI/Widget.h>
+#include <Userland/Applications/Timer/StopwatchTabGML.h>
 
 TimerWidget::TimerWidget()
 {
@@ -21,8 +21,8 @@ ErrorOr<void> TimerWidget::try_initialize_ui()
     set_fill_with_background_color(true);
     set_layout<GUI::VerticalBoxLayout>();
 
-    auto icon = TRY(Gfx::Bitmap::try_load_from_file("/res/icons/16x16/app-catdog.png"));
-    m_debug_action = GUI::Action::create("Debug", icon,[this](GUI::Action const&) {
+    auto icon = TRY(Gfx::Bitmap::try_load_from_file("/res/icons/16x16/app-catdog.png"sv));
+    m_debug_action = GUI::Action::create("Debug", icon, [this](GUI::Action const&) {
         dbgln("This is a debug action!");
         dbgln("{}", m_tab_widget->tab_count());
     });
@@ -33,10 +33,10 @@ ErrorOr<void> TimerWidget::try_initialize_ui()
     stopwatch_tab->load_from_gml(stopwatch_tab_gml);
 
     // Load buttons
-    m_start_icon = TRY(Gfx::Bitmap::try_load_from_file("/res/icons/16x16/play.png"));
-    m_stop_icon = TRY(Gfx::Bitmap::try_load_from_file("/res/icons/16x16/pause.png"));
-    m_split_icon = TRY(Gfx::Bitmap::try_load_from_file("/res/icons/16x16/plus.png"));
-    m_reset_icon = TRY(Gfx::Bitmap::try_load_from_file("/res/icons/16x16/delete.png"));
+    m_start_icon = TRY(Gfx::Bitmap::try_load_from_file("/res/icons/16x16/play.png"sv));
+    m_stop_icon = TRY(Gfx::Bitmap::try_load_from_file("/res/icons/16x16/pause.png"sv));
+    m_split_icon = TRY(Gfx::Bitmap::try_load_from_file("/res/icons/16x16/plus.png"sv));
+    m_reset_icon = TRY(Gfx::Bitmap::try_load_from_file("/res/icons/16x16/delete.png"sv));
 
     // Setup labels
     m_stopwatch_label = stopwatch_tab->find_descendant_of_type_named<GUI::Label>("stopwatch_label");

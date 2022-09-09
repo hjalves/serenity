@@ -21,7 +21,7 @@ ErrorOr<int> serenity_main(Main::Arguments arguments)
     TRY(Core::System::unveil("/res", "r"));
     TRY(Core::System::unveil(nullptr, nullptr));
 
-    auto app_icon = TRY(GUI::Icon::try_create_default_icon("app-analog-clock"));
+    auto app_icon = TRY(GUI::Icon::try_create_default_icon("app-analog-clock"sv));
     auto window = TRY(GUI::Window::try_create());
     window->set_title("Timer");
     window->set_icon(app_icon.bitmap_for_size(16));
@@ -32,8 +32,6 @@ ErrorOr<int> serenity_main(Main::Arguments arguments)
     TRY(timer_widget->try_initialize_ui());
     timer_widget->initialize_menubar(*window);
 
-
     window->show();
     return app->exec();
 }
-
