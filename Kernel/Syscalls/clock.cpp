@@ -100,9 +100,10 @@ ErrorOr<FlatPtr> Process::sys$clock_getres(Userspace<Syscall::SC_clock_getres_pa
     auto params = TRY(copy_typed_from_user(user_params));
     timespec ts {};
     switch (params.clock_id) {
+    case CLOCK_MONOTONIC:
     case CLOCK_REALTIME:
         ts.tv_sec = 0;
-        ts.tv_nsec = 1000000000 / _SC_CLK_TCK;
+        ts.tv_nsec = 1000000000 / TimeManagement::the().ticks_per_second();
         TRY(copy_to_user(params.result, &ts));
         break;
     default:
