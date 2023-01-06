@@ -8,4 +8,4 @@ set(SOURCES
 )
 
 serenity_lib(LibExample example)
-target_link_libraries(LibExample PRIVATE LibCore)
+target_link_libraries(LibExample PRIVATE LibCore LibDesktop LibGUI LibGfx)

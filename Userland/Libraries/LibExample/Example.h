@@ -10,6 +10,10 @@
 
 __BEGIN_DECLS
 
-void hello_world();
+void dbgln(char const* line);
+bool launch(char const* url_or_path);
+void create_app();
+void exec_app();
+void notify(char const* title, char const* text, char const* icon_path);
 
 __END_DECLS

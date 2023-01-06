@@ -6,11 +6,73 @@
 
 #include "Example.h"
 #include <AK/Format.h>
+#include <AK/String.h>
+#include <AK/Time.h>
+#include <AK/URL.h>
+#include <LibCore/File.h>
+#include <LibDesktop/Launcher.h>
+#include <LibGUI/Application.h>
+#include <LibGUI/Notification.h>
+#include <unistd.h>
 
 extern "C" {
 
-void hello_world()
+static RefPtr<GUI::Application> app;
+
+void dbgln(char const* line)
 {
-    dbgln("Hello world from Python!");
+    dbgln("{}", line);
 }
+
+bool launch(char const* url_or_path)
+{
+    //    DeprecatedString run_input(url_or_path);
+    auto url = URL::create_with_url_or_path(url_or_path);
+
+    if (url.scheme() == "file") {
+        auto real_path = Core::File::real_path_for(url.path());
+        if (real_path.is_null()) {
+            // errno *should* be preserved from Core::File::real_path_for().
+            warnln("Failed to launch '{}': {}", url.path(), strerror(errno));
+            return false;
+        }
+        url = URL::create_with_url_or_path(real_path);
+    }
+
+    if (!Desktop::Launcher::open(url)) {
+        warnln("Failed to launch '{}'", url);
+        return false;
+    }
+
+    dbgln("Ran via URL launch.");
+
+    return true;
 }
+
+void create_app()
+{
+    Main::Arguments arguments;
+    auto result = GUI::Application::try_create(arguments);
+    app = result.release_value_but_fixme_should_propagate_errors();
+}
+
+void exec_app()
+{
+    if (app)
+        app->exec();
+}
+
+void notify(char const* title, char const* text, char const* icon_path = nullptr)
+{
+    auto notification = GUI::Notification::construct();
+    notification->set_title(title);
+    notification->set_text(text);
+    if (icon_path) {
+        auto icon_path_sv = StringView(icon_path, strlen(icon_path));
+        auto icon_bitmap = Gfx::Bitmap::try_load_from_file(icon_path_sv).release_value_but_fixme_should_propagate_errors();
+        notification->set_icon(icon_bitmap);
+    }
+    notification->show();
+}
+
+} /* End of extern "C" */
