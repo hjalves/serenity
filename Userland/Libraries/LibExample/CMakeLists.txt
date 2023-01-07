@@ -5,6 +5,7 @@ serenity_component(
 
 set(SOURCES
     Example.cpp
+    Canvas.cpp
 )
 
 serenity_lib(LibExample example)
